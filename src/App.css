@@ -1,0 +1,101 @@
+/* App Page */
+
+a {
+  text-decoration: none;
+}
+
+#desktop-bg {
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100vh;
+  background-image: url("./assets/images/bg.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+
+#footer li a svg {
+  width: 40px;
+  height: 40px;
+}
+
+li svg {
+  width: 20px;
+  height: 20px;
+}
+
+.navbar-nav .nav-item .nav-link {
+  position: relative;
+}
+
+.navbar-nav .nav-item .nav-link::after {
+  content: "";
+  position: absolute;
+  bottom: -2px; /* Adjust this value to change the position of the bar */
+  left: 0;
+  width: 0;
+  height: 4px;
+  background-color: #000000; /* Change this color as needed */
+  transition: width 0.3s ease; /* Smooth transition effect */
+}
+
+.navbar-nav .nav-item .nav-link:hover::after {
+  width: 100%; /* Full width on hover */
+}
+
+.navbar-nav .nav-item .nav-link {
+  padding-top: 0.1rem; /* Adjust the top padding as needed */
+  padding-bottom: 0.1rem; /* Adjust the bottom padding as needed */
+}
+
+.navbar-text {
+  font-weight: bolder;
+  color: #000000;
+}
+
+.empty {
+  width: 250px;
+}
+
+/* Icons Page */
+
+#icons li a svg {
+  width: 40px;
+  height: 40px;
+}
+
+.shadow-text {
+  color: white; /* Set the text color to white */
+  text-shadow: 2px 2px 5px rgb(49, 48, 48); /* Apply a grey shadow */
+}
+
+.profile-pic {
+  width: 100%;
+}
+
+#product-url {
+  color: #ffffff;
+  background-color: #f33636;
+}
+
+#product-url:hover {
+  color: #e2d3d3;
+  background-color: #f33636;
+}
+
+.bd-placeholder-img {
+  height: 150px;
+}
+
+.skills svg {
+  width: 50px;
+  height: 50px;
+  margin: 20px;
+}
+
+.skills .excel {
+  color: #086908;
+}
