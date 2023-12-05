@@ -6,9 +6,8 @@ import {
   faInfoCircle
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { FcBusinessman, FcDiploma1 } from "react-icons/fc";
 
-const NAME_REGEX = /[A-z-]{3,20}$/;
+const NAME_REGEX = /^[A-Za-z]+(?:\s[A-Za-z]+)*$/;
 
 const Register = () => {
   const errRef = useRef();
@@ -20,10 +19,10 @@ const Register = () => {
   const [sectors, setSectors] = useState([]);
   const [validSectors, setValidSectors] = useState(false);
 
+  const [sectorOptions, setSectorOptions] = useState([]);
+
   const [terms, setTerms] = useState(false);
   const [validTerms, setValidTerms] = useState(false);
-
-  const [sectorOptions, setSectorOptions] = useState([]);
 
   const [errMsg, setErrMsg] = useState("");
 
@@ -57,23 +56,29 @@ const Register = () => {
       });
   }, []);
 
+  const handleSelectChange = (e) => {
+    const selectedOptions = Array.from(
+      e.target.selectedOptions,
+      (option) => option.value
+    );
+    setSectors(selectedOptions);
+  };
+
+  const handleBlur = (e) => {
+    // Use the selected options when the select box loses focus
+    const selectedOptions = Array.from(
+      e.target.selectedOptions,
+      (option) => option.value
+    );
+    setSectors(selectedOptions);
+  };
+
+  const handleCheckboxChange = (e) => {
+    setTerms(e.target.checked);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    console.log(sectors);
-
-    const v1 = NAME_REGEX.test(name);
-    const v2 = sectors.length > 0;
-
-    if (!v1) {
-      setErrMsg("Invalid Entry");
-      return;
-    }
-
-    if (!v2) {
-      setErrMsg("Select a sector");
-      return;
-    }
 
     try {
       const response = await axios.post(
@@ -101,7 +106,7 @@ const Register = () => {
       <div className='container pt-5'>
         <div className='row justify-content-center'>
           <div className='col-lg-6'>
-            <div className='login-wrap py-4'>
+            <div className='registration-wrap py-4'>
               <h3 className='text-center mb-0'>User Registration</h3>
               <p className='text-center'>
                 Please enter your name and pick the Sectors you are currently
@@ -115,16 +120,11 @@ const Register = () => {
               <form
                 className='login-form rounded shadow-lg'
                 onSubmit={handleSubmit}>
+                <label className='text-white'>Name: </label>
                 <div className='form-group'>
-                  <div className='icon d-flex align-items-center justify-content-center'>
-                    <span>
-                      <FcBusinessman />
-                    </span>
-                  </div>
                   <input
                     type='text'
                     className='form-control'
-                    placeholder='Names'
                     onChange={(e) => setName(e.target.value)}
                     value={name}
                     autoComplete='off'
@@ -150,36 +150,47 @@ const Register = () => {
                     First name, Middle name (optional) & Last Name
                   </p>
                 </div>
-                <div className='form-group pt-3'>
-                  <select
-                    value={sectors}
-                    onChange={(e) => setSectors(e.target.value)}
-                    className='form-select text-white'
-                    id='sector'>
-                    <option value=''>Sectors</option>
-                    {sectorOptions.map((sector) => (
-                      <option key={sector.id} value={sector.id}>
-                        {sector.name}
-                      </option>
-                    ))}
-                  </select>
-                  <div className='select-icon d-flex align-items-center'>
-                    <span>
-                      <FcDiploma1 />
-                    </span>
+
+                <label className='text-white mb-2 pt-3'>Sectors: </label>
+                <div className='form-group'>
+                  <div
+                    className='select-container'
+                    style={{ maxHeight: "150px", overflowY: "auto" }}>
+                    <select
+                      value={sectors}
+                      onChange={handleSelectChange}
+                      onBlur={handleBlur}
+                      className='form-select text-warning'
+                      id='sectorSelector'
+                      multiple
+                      size={5}
+                      required>
+                      {sectorOptions.map((sector) => (
+                        <option key={sector.id} value={sector.id}>
+                          {sector.name}
+                        </option>
+                      ))}
+                    </select>
                   </div>
                 </div>
 
                 <div className='form-group pt-3'>
                   <label className='text-white'>
-                    <input type='checkbox' className='mx-2' /> Agree to terms
+                    <input
+                      type='checkbox'
+                      className='mx-2'
+                      checked={terms}
+                      onChange={handleCheckboxChange}
+                    />
+                    Agree to terms
                   </label>
                 </div>
 
                 <div className='form-group w-100 py-3'>
                   <button
                     className='btn form-control btn-primary rounded px-3'
-                    type='submit'>
+                    type='submit'
+                    disabled={!validName | !validSectors | !validTerms}>
                     Save
                   </button>
                 </div>

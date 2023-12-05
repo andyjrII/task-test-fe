@@ -85,18 +85,7 @@ button {
   border-top: none;
   border-right: none;
   border-left: none;
-  border-color: #5089dd;
-}
-
-.select-icon {
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 20px;
-  height: 48px;
-  background: transparent;
-  font-size: 18px;
-  margin: 5px;
+  border-bottom: none;
 }
 
 .valid-icon {
@@ -109,19 +98,9 @@ button {
   font-size: 18px;
 }
 
-select.form-control[size],
-select.form-control[multiple] {
-  height: auto;
-}
-
-button:focus {
-  outline: 1px dotted;
-  outline: 5px auto -webkit-focus-ring-color;
-}
-
 input,
 button,
-.form-select {
+label {
   margin: 0;
   font-family: inherit;
   font-size: inherit;
@@ -133,11 +112,6 @@ button,
 [type="submit"] {
   -webkit-appearance: button;
   appearance: button;
-}
-
-button:not(:disabled),
-[type="submit"]:not(:disabled) {
-  cursor: pointer;
 }
 
 button::-moz-focus-inner,
@@ -191,16 +165,15 @@ button::-moz-focus-inner,
 .col-lg-6 {
   position: relative;
   width: 100%;
-  padding-right: 15px;
-  padding-left: 15px;
+  padding: 15px;
 }
 
 @media (min-width: 992px) {
   .col-lg-6 {
     -webkit-box-flex: 0;
-    -ms-flex: 0 0 33.33333%;
-    flex: 0 0 33.33333%;
-    max-width: 33.33333%;
+    -ms-flex: 0 0 40%;
+    flex: 0 0 40%;
+    max-width: 40%;
   }
 }
 
@@ -310,7 +283,7 @@ a {
   color: #5089dd;
 }
 
-.login-wrap {
+.registration-wrap {
   position: relative;
   background: #000232;
   border-radius: 5px;
@@ -321,35 +294,20 @@ a {
   box-shadow: 0px 10px 34px -15px rgba(0, 0, 0, 0.24);
 }
 
-.login-wrap h3 {
-  font-weight: 400;
+.registration-wrap h3 {
+  font-weight: 800;
   font-size: 18px;
   color: #fff;
   text-transform: uppercase;
   letter-spacing: 1px;
 }
 
-.login-wrap p {
+.registration-wrap p {
   color: rgba(255, 255, 255, 0.5);
 }
 
 .form-group {
   position: relative;
-}
-
-.form-group .icon {
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  width: 20px;
-  height: 48px;
-  background: transparent;
-  font-size: 18px;
-}
-
-.form-group .icon span {
-  color: #fff;
 }
 
 .form-control {
@@ -370,28 +328,17 @@ a {
   transition: all 0.2s ease-in-out;
 }
 
+.select-container {
+  max-height: 150px; /* Set the maximum height */
+  overflow-y: auto; /* Enable vertical scrollbar if needed */
+}
+
 @media (prefers-reduced-motion: reduce) {
   .form-control {
     -webkit-transition: none;
     -o-transition: none;
     transition: none;
   }
-}
-
-.form-control::-webkit-input-placeholder {
-  color: rgba(255, 255, 255, 0.8) !important;
-}
-
-.form-control::-moz-placeholder {
-  color: rgba(255, 255, 255, 0.8) !important;
-}
-
-.form-control:-ms-input-placeholder {
-  color: rgba(255, 255, 255, 0.8) !important;
-}
-
-.form-control:-moz-placeholder {
-  color: rgba(255, 255, 255, 0.8) !important;
 }
 
 .form-control:focus,
