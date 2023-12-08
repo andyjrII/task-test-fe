@@ -53,6 +53,7 @@ const Register = () => {
       .get("sectors/all")
       .then((response) => {
         setSectorOptions(response.data);
+        localStorage.setItem("SECTORS", JSON.stringify(response.data));
       })
       .catch((error) => {
         console.error("Error fetching Sectors:", error);
