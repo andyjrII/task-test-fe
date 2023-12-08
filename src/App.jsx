@@ -6,7 +6,7 @@ import Register from "./pages/Register";
 const App = () => {
   return (
     <main>
-      <MultiNestedSelect />
+      <Register />
     </main>
   );
 };

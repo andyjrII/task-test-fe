@@ -32,17 +32,28 @@ const MultiNestedSelect = () => {
       // If not selected, add it to the updatedValues array
       setSelectedValues([...updatedValues, value]);
     }
-    console.log(selectedValues);
   };
 
+  const texts = selectedValues.map((selectedValue) => {
+    return (
+      <span className='badge text-bg-primary mx-1' key={selectedValue.value}>
+        {selectedValue.text}
+      </span>
+    );
+  });
+
   return (
-    <ReactDropdown
-      data={sectorOptions}
-      placeholder='Search or select'
-      initialValue='Sectors'
-      onSelect={handleSelect}
-      selectedValues={selectedValues}
-    />
+    <div>
+      <ReactDropdown
+        data={sectorOptions}
+        placeholder='Search or select'
+        initialValue='Sectors'
+        onSelect={handleSelect}
+        selectedValues={selectedValues}
+        displayOption={(option) => ""}
+      />
+      <p>Sectors: {texts}</p>
+    </div>
   );
 };
 

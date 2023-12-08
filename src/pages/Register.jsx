@@ -6,6 +6,8 @@ import {
   faInfoCircle
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import ReactDropdown from "@quantalytix/react-dropdownbox";
+import "@quantalytix/react-dropdownbox/dist/index.es.css";
 
 const NAME_REGEX = /^[A-Za-z]+(?:\s[A-Za-z]+)*$/;
 
@@ -16,10 +18,9 @@ const Register = () => {
   const [validName, setValidName] = useState(false);
   const [nameFocus, setNameFocus] = useState(false);
 
-  const [sectors, setSectors] = useState([]);
-  const [validSectors, setValidSectors] = useState(false);
-
+  const [selectedValues, setSelectedValues] = useState([]);
   const [sectorOptions, setSectorOptions] = useState([]);
+  const [validSectors, setValidSectors] = useState(false);
 
   const [terms, setTerms] = useState(false);
   const [validTerms, setValidTerms] = useState(false);
@@ -32,9 +33,9 @@ const Register = () => {
   }, [name]);
 
   useEffect(() => {
-    const result = sectors.length > 0;
+    const result = selectedValues.length > 0;
     setValidSectors(result);
-  }, [sectors]);
+  }, [selectedValues]);
 
   useEffect(() => {
     const result = terms === true;
@@ -56,21 +57,20 @@ const Register = () => {
       });
   }, []);
 
-  const handleSelectChange = (e) => {
-    const selectedOptions = Array.from(
-      e.target.selectedOptions,
-      (option) => option.value
-    );
-    setSectors(selectedOptions);
-  };
+  const handleSelect = (value) => {
+    // Ensure selectedValues is always an array
+    const updatedValues = Array.isArray(selectedValues) ? selectedValues : [];
 
-  const handleBlur = (e) => {
-    // Use the selected options when the select box loses focus
-    const selectedOptions = Array.from(
-      e.target.selectedOptions,
-      (option) => option.value
-    );
-    setSectors(selectedOptions);
+    // Check if the value already exists in updatedValues
+    const isSelected = updatedValues.includes(value);
+
+    if (isSelected) {
+      // If already selected, remove it
+      setSelectedValues(updatedValues.filter((val) => val !== value));
+    } else {
+      // If not selected, add it to the updatedValues array
+      setSelectedValues([...updatedValues, value]);
+    }
   };
 
   const handleCheckboxChange = (e) => {
@@ -85,7 +85,9 @@ const Register = () => {
         "users/register",
         JSON.stringify({
           name,
-          sectorIds: sectors,
+          sectorIds: (texts = selectedValues.map(
+            (selectedValue) => selectedValue.value
+          )),
           terms
         }),
         {
@@ -100,6 +102,14 @@ const Register = () => {
       errRef.current.focus();
     }
   };
+
+  const texts = selectedValues.map((selectedValue) => {
+    return (
+      <span className='badge text-bg-primary mx-1' key={selectedValue.value}>
+        {selectedValue.text}
+      </span>
+    );
+  });
 
   return (
     <section>
@@ -153,24 +163,15 @@ const Register = () => {
 
                 <label className='text-white mb-2 pt-3'>Sectors: </label>
                 <div className='form-group'>
-                  <div
-                    className='select-container'
-                    style={{ maxHeight: "150px", overflowY: "auto" }}>
-                    <select
-                      value={sectors}
-                      onChange={handleSelectChange}
-                      onBlur={handleBlur}
-                      className='form-select text-warning'
-                      id='sectorSelector'
-                      multiple
-                      size={5}
-                      required>
-                      {sectorOptions.map((sector) => (
-                        <option key={sector.id} value={sector.id}>
-                          {sector.name}
-                        </option>
-                      ))}
-                    </select>
+                  <div>
+                    <ReactDropdown
+                      data={sectorOptions}
+                      placeholder='Search or select'
+                      initialValue='Sectors'
+                      onSelect={handleSelect}
+                      selectedValues={selectedValues}
+                    />
+                    <p>Sectors: {texts}</p>
                   </div>
                 </div>
 
