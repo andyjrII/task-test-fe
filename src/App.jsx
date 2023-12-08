@@ -1,11 +1,16 @@
 import "./App.css";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Register from "./pages/Register";
+import EditUser from "./pages/EditUser";
 
 const App = () => {
   return (
-    <main>
-      <Register />
-    </main>
+    <BrowserRouter>
+      <Routes>
+        <Route path='/' element={<Register />} />
+        <Route path='/edit' element={<EditUser />} />
+      </Routes>
+    </BrowserRouter>
   );
 };
 

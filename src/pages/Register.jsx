@@ -8,10 +8,12 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ReactDropdown from "@quantalytix/react-dropdownbox";
 import "@quantalytix/react-dropdownbox/dist/index.es.css";
+import { useNavigate } from "react-router-dom";
 
 const NAME_REGEX = /^[A-Za-z]+(?:\s[A-Za-z]+)*$/;
 
 const Register = () => {
+  const navigate = useNavigate();
   const errRef = useRef();
 
   const [name, setName] = useState("");
@@ -24,7 +26,6 @@ const Register = () => {
 
   const [terms, setTerms] = useState(false);
   const [validTerms, setValidTerms] = useState(false);
-  const [id, setId] = useState();
 
   const [errMsg, setErrMsg] = useState("");
 
@@ -92,16 +93,16 @@ const Register = () => {
         JSON.stringify({
           name,
           sectorIds,
-          terms,
-          id
+          terms
         }),
         {
           headers: { "Content-Type": "application/json" },
           withCredentials: true
         }
       );
-      setId(response.data.id);
+      localStorage.setItem("USER_DETAILS", JSON.stringify(response.data));
       alert(`User with Name: ${name} successfully registered!`);
+      navigate("/edit", { replace: true }); // Navigate to the edit page
     } catch (err) {
       if (!err?.response) {
         setErrMsg("Registraton Failed");
