@@ -24,6 +24,7 @@ const Register = () => {
 
   const [terms, setTerms] = useState(false);
   const [validTerms, setValidTerms] = useState(false);
+  const [id, setId] = useState();
 
   const [errMsg, setErrMsg] = useState("");
 
@@ -63,13 +64,16 @@ const Register = () => {
 
     // Check if the value already exists in updatedValues
     const isSelected = updatedValues.includes(value);
-
     if (isSelected) {
       // If already selected, remove it
-      setSelectedValues(updatedValues.filter((val) => val !== value));
+      const uniqueArray = [
+        ...new Set(updatedValues.filter((val) => val !== value))
+      ];
+      setSelectedValues(uniqueArray);
     } else {
       // If not selected, add it to the updatedValues array
-      setSelectedValues([...updatedValues, value]);
+      const uniqueArray = [...new Set([...updatedValues, value])];
+      setSelectedValues(uniqueArray);
     }
   };
 
@@ -79,22 +83,25 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    const sectorIds = selectedValues.map(
+      (selectedValue) => selectedValue.value
+    );
     try {
       const response = await axios.post(
         "users/register",
         JSON.stringify({
           name,
-          sectorIds: (texts = selectedValues.map(
-            (selectedValue) => selectedValue.value
-          )),
-          terms
+          sectorIds,
+          terms,
+          id
         }),
         {
           headers: { "Content-Type": "application/json" },
           withCredentials: true
         }
       );
+      setId(response.data.id);
+      alert(`User with Name: ${name} successfully registered!`);
     } catch (err) {
       if (!err?.response) {
         setErrMsg("Registraton Failed");
@@ -105,7 +112,7 @@ const Register = () => {
 
   const texts = selectedValues.map((selectedValue) => {
     return (
-      <span className='badge text-bg-primary mx-1' key={selectedValue.value}>
+      <span className='badge text-bg-primary m-1' key={selectedValue.value}>
         {selectedValue.text}
       </span>
     );
@@ -162,17 +169,15 @@ const Register = () => {
                 </div>
 
                 <label className='text-white mb-2 pt-3'>Sectors: </label>
-                <div className='form-group'>
-                  <div>
-                    <ReactDropdown
-                      data={sectorOptions}
-                      placeholder='Search or select'
-                      initialValue='Sectors'
-                      onSelect={handleSelect}
-                      selectedValues={selectedValues}
-                    />
-                    <p>Sectors: {texts}</p>
-                  </div>
+                <div className='form-group mt-1'>
+                  <ReactDropdown
+                    data={sectorOptions}
+                    placeholder='Search or select'
+                    initialValue='Sectors'
+                    onSelect={handleSelect}
+                    selectedValues={selectedValues}
+                  />
+                  <p className='mt-1'>Sectors: {texts}</p>
                 </div>
 
                 <div className='form-group pt-3'>
