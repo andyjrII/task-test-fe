@@ -76,9 +76,10 @@ const EditUser = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const sectorIds = selectedValuesField.map(
-      (selectedValue) => selectedValue.value
+    const sectorIds = selectedValuesField.map((selectedValue) =>
+      selectedValue.value ? selectedValue.value : selectedValue.id
     );
+
     try {
       const response = await axios.patch(
         `users/update/${id}`,
@@ -105,7 +106,7 @@ const EditUser = () => {
   const texts = selectedValuesField.map((selectedValue) => {
     return (
       <span className='badge text-bg-primary m-1' key={selectedValue.value}>
-        {selectedValue.text}
+        {selectedValue.name ? selectedValue.name : selectedValue.text}
       </span>
     );
   });
