@@ -1,1 +1,1 @@
-buildCommand: npm ci && npm run build
+buildCommand: npm install --force && npm run build
